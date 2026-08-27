@@ -6,7 +6,7 @@
 [![Version](https://img.shields.io/badge/Version-v1.6-orange.svg?style=for-the-badge&logo=github)](https://github.com/Nostraxiten/nostraxiten/releases)
 [![Security](https://img.shields.io/badge/Security-OSINT%20%26%20Forensics-red.svg?style=for-the-badge&logo=keycdn&logoColor=white)](#)
 
----
+<img width="656" height="314" alt="image" src="https://github.com/user-attachments/assets/c381acaf-4bba-4aea-a759-0cabc811472e" />
 
 ## Overview
 
