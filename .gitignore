@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local configuration and generated investigation data
+.noxforens.json
+*.session/
+sessions/
+reports/
+.DS_Store
+Thumbs.db

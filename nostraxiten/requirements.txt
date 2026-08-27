@@ -1,0 +1,12 @@
+# === CORE (todas las plataformas) ===
+requests          # VT API, HIBP, Hunter, OSINT Pro (domain/username/email recon)
+cryptography      # AES para cookies Linux
+dnspython         # DNS records (MX/NS/TXT/SOA/CNAME) para Domain Recon y Email Recon
+Pillow            # EXIF/GPS para Metadata Recon
+
+# === WINDOWS ONLY ===
+pywin32           # Windows DPAPI (solo Win)
+
+# === OPTIONAL / ADVANCED ===
+pycryptodome      # fallback AES
+scapy             # opcional para netsniff avanzado
