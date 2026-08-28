@@ -103,7 +103,7 @@ Nostraxiten includes an **intelligent automated installer (Option `99`)** that c
 ### 1. Clone the repository and navigate to it
 ```bash
 git clone https://github.com/Nostraxiten/nostraxiten-framework.git
-cd nostraxiten
+cd nostraxiten-framework
 ```
 
 ### 2. Platform-Specific Configuration
