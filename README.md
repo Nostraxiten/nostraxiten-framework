@@ -211,8 +211,7 @@ To add a new module:
 
 ---
 
-## Disclaimer
 
-> [!WARNING]
-> This framework and its modules are designed exclusively for educational purposes, academic research, authorized security audits, and forensic analysis under explicit legal consent. Unauthorized use of Nostraxiten to perform unauthorized activities is the sole responsibility of the end user. The authors and contributors are not responsible for any damage caused by misuse of this tool.
+## License
 
+MIT. See [LICENSE](LICENSE).
