@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from core.colors import r, cy, g, y, dm
-from core.utils import new_session, pause, inp, banner, hdr
+from core.utils import new_session, pause, inp, banner, hdr, run_and_save
 
 def run():
     banner()
@@ -18,7 +18,9 @@ def run():
         count = inp("Paquetes [200]: ") or '200'
         out   = session / 'captura.pcap'
         print(f"\n  {y('!')} Capturando... Ctrl+C para detener\n")
-        os.system(f'tshark -i {iface} -c {count} -w {out}')
+        run_cmd = f'tshark -i "{iface}" -c {count} -w "{out}"' if iface else f'tshark -c {count} -w "{out}"'
+        import subprocess
+        subprocess.run(run_cmd, shell=True)
         print(f"\n  {g('✓')} PCAP guardado: {out}")
     else:
         pcap = inp("Ruta al archivo PCAP: ")
@@ -26,16 +28,12 @@ def run():
             print(f"  {r('✗')} Archivo no encontrado"); pause(); return
 
         analyses = {
-            '1': (f'tshark -r {pcap} -q -z io,stat,0',                          'estadisticas.txt',   'Estadísticas generales'),
-            '2': (f'tshark -r {pcap} -T fields -e ip.src -e ip.dst 2>/dev/null | sort | uniq -c | sort -rn | head -50',
-                                                                                  'top_ips.txt',        'Top IPs src/dst'),
-            '3': (f'tshark -r {pcap} -Y http.request -T fields -e http.host -e http.request.uri 2>/dev/null',
-                                                                                  'http_requests.txt',  'HTTP requests'),
-            '4': (f'tshark -r {pcap} -Y dns -T fields -e dns.qry.name 2>/dev/null | sort | uniq -c | sort -rn',
-                                                                                  'dns_queries.txt',    'DNS queries'),
-            '5': (f'tshark -r {pcap} -q -z io,phs',                             'protocols.txt',      'Distribución protocolos'),
-            '6': (f'tshark -r {pcap} -Y "tcp.flags.syn==1 && tcp.flags.ack==0" -T fields -e ip.src -e tcp.dstport 2>/dev/null | sort | uniq -c | sort -rn',
-                                                                                  'syn_scan.txt',       'Posible port-scan (SYN)'),
+            '1': (f'tshark -r "{pcap}" -q -z io,stat,0',                          'estadisticas.txt',   'Estadísticas generales'),
+            '2': (f'tshark -r "{pcap}" -T fields -e ip.src -e ip.dst',            'top_ips.txt',        'Top IPs src/dst'),
+            '3': (f'tshark -r "{pcap}" -Y http.request -T fields -e http.host -e http.request.uri', 'http_requests.txt',  'HTTP requests'),
+            '4': (f'tshark -r "{pcap}" -Y dns -T fields -e dns.qry.name',         'dns_queries.txt',    'DNS queries'),
+            '5': (f'tshark -r "{pcap}" -q -z io,phs',                             'protocols.txt',      'Distribución protocolos'),
+            '6': (f'tshark -r "{pcap}" -Y "tcp.flags.syn==1 && tcp.flags.ack==0" -T fields -e ip.src -e tcp.dstport', 'syn_scan.txt', 'Posible port-scan (SYN)'),
         }
         for k, (_, fn, desc) in analyses.items():
             print(f"    {cy(k)}. {desc}")
@@ -43,7 +41,7 @@ def run():
         cmd, fname, _ = analyses.get(sub, analyses['1'])
         out_f = session / fname
         print(f"\n  {cy('→')} {dm(cmd)}\n")
-        os.system(f'{cmd} 2>&1 | tee {out_f}')
+        run_and_save(cmd, out_f)
         print(f"\n  {g('✓')} Guardado: {out_f}")
     pause()
 

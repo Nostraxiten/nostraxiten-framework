@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from core.colors import r, cy, g, dm
-from core.utils import new_session, pause, inp, banner, hdr
+from core.utils import new_session, pause, inp, banner, hdr, run_and_save
 
 def run():
     banner()
@@ -20,15 +20,15 @@ def run():
 
     out_dir = session / 'extraccion'
     if mode == '2':
-        cmd = f'binwalk -e {target} -C {out_dir} --run-as=root 2>/dev/null || binwalk -e {target} -C {out_dir}'
+        cmd = f'binwalk -e "{target}" -C "{out_dir}"'
     elif mode == '3':
-        cmd = f'binwalk -E {target} --save --directory {session}'
+        cmd = f'binwalk -E "{target}" --save --directory "{session}"'
     else:
-        cmd = f'binwalk {target}'
+        cmd = f'binwalk "{target}"'
 
     res = session / 'resultado.txt'
     print(f"\n  {cy('→')} {dm(cmd)}\n")
-    os.system(f'{cmd} 2>&1 | tee {res}')
+    run_and_save(cmd, res)
     print(f"\n  {g('✓')} Guardado en: {session}")
     pause()
 

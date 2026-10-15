@@ -1,6 +1,6 @@
 import os
 from core.colors import r, cy, g
-from core.utils import exists, pkg_install, new_session, pause, inp, warn_termux, banner, hdr
+from core.utils import exists, pkg_install, new_session, pause, inp, warn_termux, banner, hdr, run_and_save
 
 def run():
     banner()
@@ -11,19 +11,16 @@ def run():
     if not tool:
         print(f"  {r('✗')} Herramienta no encontrada. Instálala usando los comandos mostrados anteriormente."); pause(); return
 
-    if not tool:
-        print(f"  {r('✗')} No se pudo instalar"); pause(); return
-
     session = new_session(f'{tool}_scan')
     out     = session / 'scan_result.txt'
 
     if tool == 'chkrootkit':
-        cmd = f'chkrootkit 2>&1 | tee {out}'
+        cmd = 'chkrootkit'
     else:
-        cmd = f'rkhunter --check --skip-keypress --report-warnings-only 2>&1 | tee {out}'
+        cmd = 'rkhunter --check --skip-keypress --report-warnings-only'
 
     print(f"\n  {cy('→')} Ejecutando {tool}... (puede tardar)\n")
-    os.system(cmd)
+    run_and_save(cmd, out)
     print(f"\n  {g('✓')} Resultado: {out}")
     pause()
 

@@ -37,7 +37,7 @@ def print_banner():
     {d}
     """
     print(banner)
-    print(f"{r}[{w}I{r}]{w} Info                                                                 {w}Next {r}[{w}N{r}]")
+    print(f"{r}[{w}I{r}]{w} Info                                                                 {r}[{w}H{r}]{w} Help")
     print(f"{r}[{w}S{r}]{w} Site")
 
 def print_menu_columns(columns, headers):
@@ -266,10 +266,19 @@ def main():
             settings.edit()
         elif choice in ['I', 'i']:
             print(f"\n{w}[i] Nostraxiten Framework - Advanced Forensic & OSINT Suite")
-            print(f"{w}[i] Version 1.6 - OSINT Pro Edition")
+            print(f"{w}[i] Version 1.7 - Cyber Forensics & OSINT Engine")
             input(f"\n{d}Press Enter to return...")
         elif choice in ['S', 's']:
-            print(f"\n{w}[i] Github: https://github.com/nostraxiten/noxforens")
+            print(f"\n{w}[i] Github: https://github.com/nostraxiten/nostraxiten-framework")
+            input(f"\n{d}Press Enter to return...")
+        elif choice in ['H', 'h']:
+            print(f"\n{w}[?] Nostraxiten Framework Help:")
+            print(f"    - NOX / FORENSE: Herramientas forenses, Wi-Fi, credenciales y reportes")
+            print(f"    - OSINT / RED: Wrappers para escaneo y análisis de red clásico")
+            print(f"    - ANALISIS SISTEMA: Forense de procesos, binarios, timeline y carving")
+            print(f"    - OSINT PRO: Motores de investigación OSINT de correos, usuarios y dominios")
+            print(f"    - [98]: Configuración de API Keys (VirusTotal, Shodan, Hunter, etc.)")
+            print(f"    - [99]: Instalación de dependencias del sistema")
             input(f"\n{d}Press Enter to return...")
         elif choice in all_options:
             module_num, module_name, module_path = all_options[choice]

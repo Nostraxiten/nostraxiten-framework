@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from core.colors import r, cy, g, dm
-from core.utils import exists, new_session, pause, inp, banner, hdr
+from core.utils import exists, new_session, pause, inp, banner, hdr, run_and_save
 
 def run():
     banner()
@@ -37,9 +37,9 @@ def run():
     session = new_session('volatility')
     out     = session / f"{plugin.replace('.', '-')}.txt"
 
-    cmd = f'{vol_bin} -f {mem_file} {plugin}'
+    cmd = f'{vol_bin} -f "{mem_file}" {plugin}'
     print(f"\n  {cy('→')} {dm(cmd)}\n")
-    os.system(f'{cmd} 2>&1 | tee {out}')
+    run_and_save(cmd, out)
     print(f"\n  {g('✓')} Guardado: {out}")
     pause()
 

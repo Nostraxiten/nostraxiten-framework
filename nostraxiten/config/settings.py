@@ -18,6 +18,14 @@ class Config:
         self.auto_report = False
         self.load()
 
+    @property
+    def virustotal_key(self):
+        return self.vt_api_key
+
+    @virustotal_key.setter
+    def virustotal_key(self, val):
+        self.vt_api_key = val
+
     def load(self):
         if CONFIG_FILE.exists():
             try:

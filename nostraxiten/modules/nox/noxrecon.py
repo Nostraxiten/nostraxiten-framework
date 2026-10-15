@@ -210,22 +210,10 @@ def run():
         home = Path.home()
         scan_paths = [home / 'Documents', home / 'Desktop', home / '.config']
     
-    for sp in scan_paths:
-        if sp.exists():
-            scan_dir(str(sp), quiet=True)
-            # Mover el leaks.json generado al directorio de la sesión de noxrecon
-            # ya que scan_dir crea su propia sesión por defecto. 
-            # (Note: we modified scan_dir to just return the results and path, let's copy it here)
-            # Actually, `scan_dir` creates a new session inside `BASE_DIR`. Let's just find the latest one.
-            # A better way is to adapt `scan_dir` to accept a destination, but since we didn't, we can just glob.
-            pass
-            
-    # As `scan_dir` creates its own session, we will re-implement a quick scan here to put it in 08_credenciales
-    from modules.nox.credscan import scan_dir as cs_scan
     all_found = []
     for sp in scan_paths:
         if sp.exists():
-            found, _ = cs_scan(str(sp), quiet=True)
+            found, _ = scan_dir(str(sp), quiet=True, create_session=False)
             all_found.extend(found)
     if all_found:
         save_file(cred_dir / 'leaks.json', __import__('json').dumps(all_found, indent=4))

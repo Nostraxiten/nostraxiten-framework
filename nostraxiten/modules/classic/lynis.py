@@ -1,7 +1,7 @@
 import os
 import shutil
 from core.colors import cy, g, y, dm
-from core.utils import new_session, pause, banner, hdr
+from core.utils import new_session, pause, banner, hdr, run_and_save
 from core.env import IS_ROOT, HOME
 
 def run():
@@ -17,9 +17,9 @@ def run():
     log_f   = session / 'lynis_log.txt'
     out_f   = session / 'output.txt'
 
-    cmd = f'{lynis_bin} audit system --report-file {report} --logfile {log_f} --no-colors 2>&1 | tee {out_f}'
+    cmd = f'{lynis_bin} audit system --report-file "{report}" --logfile "{log_f}" --no-colors'
     print(f"\n  {cy('→')} Ejecutando auditoría (puede tardar varios minutos)...\n")
-    os.system(cmd)
+    run_and_save(cmd, out_f)
     print(f"\n  {g('✓')} Reporte: {report}")
     print(f"  {g('✓')} Log:     {log_f}")
     pause()

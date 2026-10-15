@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from core.colors import cy, g, dm
-from core.utils import new_session, pause, inp, banner, hdr
+from core.utils import new_session, pause, inp, banner, hdr, run_and_save
 
 def run():
     banner()
@@ -15,7 +15,7 @@ def run():
     rec_flag = '-r' if Path(target).is_dir() else ''
     cmd = f'exiftool {rec_flag} -a -u -g1 "{target}"'
     print(f"\n  {cy('→')} {dm(cmd)}\n")
-    os.system(f'{cmd} 2>&1 | tee {out}')
+    run_and_save(cmd, out)
     print(f"\n  {g('✓')} Metadatos en: {out}")
     pause()
 

@@ -3,7 +3,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Platform Support](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20Android%20(Termux)-lightgrey.svg?style=for-the-badge&logo=target)](https://github.com/Nostraxiten/nostraxiten)
-[![Version](https://img.shields.io/badge/Version-v1.6-orange.svg?style=for-the-badge&logo=github)](https://github.com/Nostraxiten/nostraxiten/releases)
+[![Version](https://img.shields.io/badge/Version-v1.7-orange.svg?style=for-the-badge&logo=github)](https://github.com/Nostraxiten/nostraxiten/releases)
 [![Security](https://img.shields.io/badge/Security-OSINT%20%26%20Forensics-red.svg?style=for-the-badge&logo=keycdn&logoColor=white)](#)
 
 <img width="656" height="314" alt="image" src="https://github.com/user-attachments/assets/c381acaf-4bba-4aea-a759-0cabc811472e" />
@@ -15,9 +15,14 @@
 Through an optimized interactive console interface (CLI), Nostraxiten unifies powerful industry-standard tools under a single modular environment, enabling security analysts, researchers, and enthusiasts to execute complex audits with ease.
 
 > [!NOTE]
-> **v1.6 Update:** **OSINT Pro** has been incorporated, a 100% native Python reconnaissance engine (no external binaries required) featuring Domain Recon, Cross-platform Username Recon, Email Recon with breach-checking, EXIF/GPS analysis, and an interactive entity correlation engine. API key management (Hunter.io, HaveIBeenPwned, VirusTotal, Onyphe, Shodan) is now exposed directly from the main menu.
->
-> **v1.5 Update:** The system core was completely redesigned, optimizing the interactive interface performance and enhancing the cross-platform dependency manager for a seamless experience.
+> **v1.7 Update:** Major stability, cross-platform hardening, and forensics engine overhaul:
+> * **Pure Python Cross-Platform Parity:** Binary analysis (`NOX_BINARY`) rewritten natively with MD5/SHA1/SHA256 hashing, magic byte format identification (PE, ELF, Mach-O, ZIP, etc.), canonical hexdump, ASCII strings extraction, and VirusTotal threat intelligence.
+> * **Universal Command Streaming:** Replaced legacy Unix shell pipelines (`| tee`) across classic modules (`tshark`, `binwalk`, `lynis`, `exiftool`, `chkrootkit`, `volatility`) with a robust cross-platform output streamer and file logger (`run_and_save`).
+> * **Advanced Steganography & LSB Engine:** `NOX_STEGDETECT` upgraded with Shannon entropy calculation, LSB statistical uniformity testing, ASCII payload reconstruction, and trailing EOF overlay detection (ZIP/RAR polyglots).
+> * **Deep Process & Persistence Auditing:** `NOX_PROCWATCH` enhanced with cross-platform inspection (Windows WMI/CIM & Linux `/proc`) detecting hollow processes, temporary directory executions, reverse shells, and automated persistence checks (Windows Registry Run keys, Startup folders, Linux crontabs).
+> * **Full MACB Forensic Timelines:** `NOX_TIMELINE` enhanced to correlate Modified, Accessed, and Created (MACB) temporal artifacts with full UTF-8 encoding.
+> * **Hardened Forensics Reporting:** `NOX_REPORT` secured against XSS injections via HTML escaping, data corruption fix, and redesigned with a responsive cybernetic theme, anchor navigation, and evidence metadata.
+> * **Extended Secret Scanner:** `NOX_CREDSCAN` upgraded with expanded detection rules (GitHub tokens, Slack, Discord, JWT, generic API keys) and decoupled session handling.
 
 ---
 
@@ -33,7 +38,7 @@ Nostraxiten organizes its functions into three main pillars, enabling seamless t
 
 ```mermaid
 graph TD
-    A[Nostraxiten v1.6] --> B[Nox Modules]
+    A[Nostraxiten v1.7] --> B[Nox Modules]
     A --> C[Classic Modules]
     A --> D[Utilities Modules]
     A --> E[OSINT Pro - Native Engine]

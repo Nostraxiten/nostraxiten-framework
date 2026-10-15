@@ -20,20 +20,48 @@ def run(cmd, shell=True, timeout=120):
     except Exception as e:
         return '', str(e), 1
 
+def run_and_save(cmd, out_path, shell=True):
+    out_path = Path(out_path)
+    lines = []
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            shell=shell,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors='replace',
+            bufsize=1
+        )
+        if proc.stdout:
+            for line in proc.stdout:
+                print(line, end='', flush=True)
+                lines.append(line)
+        proc.wait()
+        save_file(out_path, "".join(lines))
+        return proc.returncode
+    except Exception as e:
+        err_msg = f"Error ejecutando comando: {e}\n"
+        print(f"  {r('✗')} {err_msg}")
+        save_file(out_path, err_msg)
+        return 1
+
 def exists(cmd):
     return shutil.which(cmd) is not None
 
 def pkg_install(name):
     print(f"  {y('→')} {PKG_MGR} install {name}...")
-    os.system(f'{PKG_MGR} install -y {name} 2>/dev/null')
+    if os.name == 'nt':
+        subprocess.run([PKG_MGR, 'install', '-e', '--id', name], capture_output=True)
+    else:
+        subprocess.run([PKG_MGR, 'install', '-y', name], capture_output=True)
 
 def pip_install(name):
     print(f"  {y('→')} pip install {name}...")
-    subprocess.run(
-        [sys.executable, '-m', 'pip', 'install', name,
-         '--break-system-packages', '-q'],
-        capture_output=True
-    )
+    cmd = [sys.executable, '-m', 'pip', 'install', name, '-q']
+    if os.name != 'nt' and not IS_TERMUX:
+        cmd.append('--break-system-packages')
+    subprocess.run(cmd, capture_output=True)
 
 def git_clone(url, dest):
     dest = Path(dest)
@@ -65,7 +93,7 @@ def check_install(binary, pkg=None, pip=None, git_url=None, git_dest=None):
     return False
 
 def save_file(path, content):
-    with open(path, 'w', errors='replace') as f:
+    with open(path, 'w', encoding='utf-8', errors='replace') as f:
         f.write(str(content))
 
 def shell_out(cmd):
@@ -76,6 +104,12 @@ def new_session(name='session'):
     ts   = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     path = BASE_DIR / f"{ts}_{name}"
     path.mkdir(parents=True, exist_ok=True)
+    try:
+        from config.settings import settings
+        settings.last_session = str(path)
+        settings.save()
+    except Exception:
+        pass
     return path
 
 def inp(prompt=''):
@@ -109,10 +143,26 @@ def banner():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(LOGO)
     now  = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    env  = f"{C.G}Termux{C.RS}" if IS_TERMUX else f"{C.CY}Kali/Linux{C.RS}"
-    priv = f"{C.R}● ROOT{C.RS}" if IS_ROOT else f"{C.Y}● user{C.RS}"
-    padding = " " * (18 if not IS_TERMUX else 22)
+    if IS_TERMUX:
+        os_label = "Termux"
+        env = f"{C.G}{os_label}{C.RS}"
+    elif os.name == 'nt':
+        os_label = "Windows"
+        env = f"{C.CY}{os_label}{C.RS}"
+    elif sys.platform == 'darwin':
+        os_label = "macOS"
+        env = f"{C.CY}{os_label}{C.RS}"
+    else:
+        os_label = "Linux"
+        env = f"{C.CY}{os_label}{C.RS}"
+    priv_label = "● ROOT" if IS_ROOT else "● user"
+    priv = f"{C.R}{priv_label}{C.RS}" if IS_ROOT else f"{C.Y}{priv_label}{C.RS}"
+    
+    # Calculate box spacing cleanly
+    inner_len = len(now) + 2 + len(os_label) + 2 + len(priv_label)
+    pad = " " * max(2, 58 - inner_len)
+    
     print(f"  {C.CY}╔════════════════════════════════════════════════════════════╗")
-    print(f"  ║  {C.Y}FORENX{C.CY} / {C.W}NOXFORENS{C.CY} ── Digital Forensics Suite v1.1        ║")
-    print(f"  ║  {C.DM}{now}{C.RS}  {env}  {priv} {padding}{C.CY}║")
+    print(f"  ║  {C.Y}FORENX{C.CY} / {C.W}NOXFORENS{C.CY} ── Digital Forensics Suite v1.7        ║")
+    print(f"  ║  {C.DM}{now}{C.RS}  {env}  {priv}{pad}{C.CY}║")
     print(f"  ╚════════════════════════════════════════════════════════════╝{C.RS}\n")
