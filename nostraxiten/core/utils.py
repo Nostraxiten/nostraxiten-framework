@@ -8,6 +8,17 @@ from core.colors import C, r, g, y, cy, dm, w
 from core.env import IS_TERMUX, IS_ROOT, PKG_MGR, BASE_DIR
 from core.logo import LOGO
 
+if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+if sys.stderr and hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
 def run(cmd, shell=True, timeout=120):
     try:
         p = subprocess.run(

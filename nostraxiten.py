@@ -6,7 +6,9 @@ import shutil
 
 # 1. Error de Unicode en Windows solucionado:
 if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 try:
     from colorama import init, Fore, Style
@@ -300,6 +302,7 @@ def main():
                     # La carpeta 'nostraxiten' contiene los paquetes core, modules, etc.
                     project_root = os.path.join(BASE_DIR, "nostraxiten")
                     env["PYTHONPATH"] = project_root + (os.pathsep + env.get("PYTHONPATH", "") if env.get("PYTHONPATH") else "")
+                    env["PYTHONIOENCODING"] = "utf-8"
                     
                     subprocess.run([sys.executable, module_full_path], env=env)
                 except Exception as e:

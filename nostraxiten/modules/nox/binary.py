@@ -12,7 +12,8 @@ from core.colors import cy, g, dm, r, y, C
 from core.utils import new_session, save_file, pause, inp, banner, hdr
 from config.settings import settings
 
-def calculate_hashes(file_path: Path):
+def calculate_hashes(file_path):
+    file_path = Path(file_path)
     h_md5 = hashlib.md5()
     h_sha1 = hashlib.sha1()
     h_sha256 = hashlib.sha256()
@@ -29,7 +30,8 @@ def calculate_hashes(file_path: Path):
         "SHA256": h_sha256.hexdigest()
     }
 
-def detect_file_type(data: bytes, file_path: Path) -> str:
+def detect_file_type(data: bytes, file_path) -> str:
+    file_path = Path(file_path)
     if len(data) >= 2 and data[:2] == b'MZ':
         arch = "Unknown PE"
         try:
